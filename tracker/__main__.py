@@ -10,7 +10,7 @@ def main():
             if str(i).startswith("next"):
                 href='https://www.kernel.org/'
             else:
-                href='https://git.kernel.org/torvalds/h/{0}'.format(str(i))
+                href='https://git.kernel.org/torvalds/h/v{0}'.format(str(i))
             try:
                 client.send_message(-1001195071888,"<strong>New Kernel version available</strong>\n<a href='{0}'>{1}</a>".format(href,i))
             except Exception as e:
