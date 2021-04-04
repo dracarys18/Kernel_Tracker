@@ -11,6 +11,9 @@ class Linux:
             self.write_file()
     
     def get_versions(self):
+        """
+        Scrape the latest kernel versions from kernel.org and save it in a list 
+        """
         url = "https://www.kernel.org"
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -23,17 +26,29 @@ class Linux:
     
 
     def write_file(self):
+        """
+        Write the latest available kernel versions as a json file with
+        'mainline' being the latest available mainline kernel and stable
+        and longterm kernels as 'stable' and the 'longterm' respectively
+        """
         data = self.get_versions()
         with open('data.json','w') as f:
             json.dump(data,f)
 
         
     def get_file_content(self):
+        """
+        Get contents from data.json file and save it as a data dictionary
+        """
         with open('data.json','r') as f:
             data = json.load(f)
         return data
 
     def is_updated(self):
+        """
+        Get the contents from data.json and compare it with the scraped data from
+        kernel.org and return 3 booleans.
+        """
         realdat = self.get_versions()
         fildat = self.get_file_content()
         mainline = realdat['mainline']==fildat['mainline']
@@ -44,6 +59,9 @@ class Linux:
         return mainline,stable,longterm
     
     def updatable_kernels(self):
+        """
+        Returns the list of updatable kernels
+        """
         updatable=False
         main,sta,lon = self.is_updated()
         da = self.get_versions()
@@ -67,6 +85,9 @@ class Linux:
         return updates
     
     def git_push(self):
+        """
+        Pushes the data.json regularly to git everytime any kernel gets updates
+        """
         nw = datetime.today()
         today = nw.strftime("%d-%m-%Y")
         github_oauth=str(os.getenv("GITHUB_OAUTH"))
