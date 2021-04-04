@@ -28,6 +28,7 @@ def check_updates():
         resp = requests.get("https://raw.githubusercontent.com/dracarys18/Kernel_Tracker/master/data.json").json()
         for i in resp['longterm']:
             if i.startswith('4.14') and i!=r:
+                r=i
                 post_to_telegram(i+'arrived')
 ```
 
