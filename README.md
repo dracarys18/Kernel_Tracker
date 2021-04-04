@@ -1,3 +1,5 @@
+<h1>Channel</h1>
+<a href='https://t.me/kernel_tracker'>Kernel Tracker</a> is the channel where the bot will be sending the updates in.
 <h1>Introduction</h1>
 This is a Telegram Bot to Track Kernel Upstreams <a href='https://www.kernel.org/'>kernel.org</a> and send it to a telegram channel specified. I used BeautifulSoup to scrape the data from the kernel.org website and telethon to send the message to the channel.
 
@@ -28,7 +30,5 @@ def check_updates():
             if i.startswith('4.14') and i!=r:
                 post_to_telegram(i+'arrived')
 ```
-<h1>Channel</h1>
-<a href='https://t.me/kernel_tracker'>Kernel Tracker</a> is the channel where the bot will be sending the updates in.
 
  
