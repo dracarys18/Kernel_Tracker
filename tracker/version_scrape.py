@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
-from os import system
+from os import system,path,getenv
 import requests
 import json
-import os
 
 class Linux:
     def __init__(self):
-        if not os.path.exists("data.json"):
+        if not path.exists("data.json"):
             self.write_file()
     
     def get_versions(self):
@@ -90,5 +89,5 @@ class Linux:
         """
         nw = datetime.today()
         today = nw.strftime("%d-%m-%Y")
-        github_oauth=str(os.getenv("GITHUB_OAUTH"))
+        github_oauth=str(getenv("GITHUB_OAUTH"))
         system("git config user.name 'dracarys18' && git config user.email karthihegde010@gmail.com && git add data.json && git commit -m \"[Kernel] sync: {0}\" && git push -q https://{1}@github.com/dracarys18/Kernel_Tracker.git HEAD:master".format(today,github_oauth))
