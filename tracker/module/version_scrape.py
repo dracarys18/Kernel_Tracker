@@ -1,9 +1,12 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
+from dotenv import load_dotenv
 from os import system,path,getenv
 import requests
 import json
 
+load_dotenv("vars.env")
+BOT_TOKEN = str(getenv("BOT_TOKEN"))
 class Linux:
     def __init__(self):
         if not path.exists("data.json"):
@@ -91,3 +94,22 @@ class Linux:
         today = nw.strftime("%d-%m-%Y")
         github_oauth=str(getenv("GITHUB_OAUTH"))
         system("git config user.name 'dracarys18' && git config user.email karthihegde010@gmail.com && git add data.json && git commit -m \"[Kernel] sync: {0}\" && git push -q https://{1}@github.com/dracarys18/Kernel_Tracker.git HEAD:master".format(today,github_oauth))
+    
+    def post_to_channel(self,message):
+        """
+        Post the message into the channel using HTTP POST
+        """
+        pars = (
+            ('chat_id', -1001195071888),
+            ('text', str(message)),
+            ('parse_mode', "HTML"),
+            ('disable_web_page_preview', "yes")
+        )
+        url = "https://api.telegram.org/bot{0}/sendMessage".format(BOT_TOKEN)
+        req = requests.post(url,params=pars)
+        status = req.status_code
+        if status==200:
+            print("Message sent")
+        else:
+            print("Cant sent the message\n Error Code:-"+str(status))
+
