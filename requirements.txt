@@ -1,3 +1,2 @@
-telethon
 beautifulsoup4
 python-dotenv
