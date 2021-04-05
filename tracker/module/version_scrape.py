@@ -4,9 +4,12 @@ from dotenv import load_dotenv
 from os import system,path,getenv
 import requests
 import json
+import logging
 
 load_dotenv("vars.env")
 BOT_TOKEN = str(getenv("BOT_TOKEN"))
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
+LOGGER = logging.getLogger(__name__)
 class Linux:
     def __init__(self):
         if not path.exists("data.json"):
@@ -20,10 +23,18 @@ class Linux:
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         releases_table = soup.find(id='releases')
-        versions = releases_table.findAll('strong')
-        vtable = {'mainline':versions[0].text,'stable':versions[1].text,'longterm':[]}
-        for i in versions[2:]:
-            vtable['longterm'].append(i.text)
+        vert = releases_table.findAll('tr')
+        vtable = {'mainline':'','stable':[],'longterm':[],'next':''}
+        for i in vert:
+            td = i.find('td').text
+            if td=='mainline:':
+                vtable['mainline'] = i.find('strong').text
+            elif td=='stable:':
+                vtable['stable'].append(i.find('strong').text)
+            elif td=='longterm:':
+                vtable['longterm'].append(i.find('strong').text)
+            elif td=='linux-next:':
+                vtable['next']=i.find('strong').text
         return vtable
     
 
@@ -49,41 +60,40 @@ class Linux:
     def is_updated(self):
         """
         Get the contents from data.json and compare it with the scraped data from
-        kernel.org and return 3 booleans.
+        kernel.org and return mainline as Boolean as there will be only a single 
+        mainline kernel and Stable and Longterm Kernels as list.
         """
         realdat = self.get_versions()
         fildat = self.get_file_content()
         mainline = realdat['mainline']==fildat['mainline']
-        stable = realdat['stable']==fildat['stable']
-        longterm =[]
-        for i in range(len(realdat['longterm'])):
-            longterm.append(fildat['longterm'][i]==realdat['longterm'][i])
-        return mainline,stable,longterm
-    
+        stable = [i for i in realdat['stable'] if i not in fildat['stable']]
+        longterm = [i for i in realdat['longterm'] if i not in fildat['longterm']]
+        nex = realdat['next']==fildat['next']
+        return mainline,stable,longterm,nex
+
     def updatable_kernels(self):
         """
         Returns the list of updatable kernels
         """
-        updatable=False
-        main,sta,lon = self.is_updated()
+        main,sta,lon,nex = self.is_updated()
         da = self.get_versions()
         updates = []
         if not main:
-            updatable=True
             updates.append(da['mainline'])
 
-        if not sta:
-            updatable=True
-            updates.append(da['stable'])
+        if sta:
+            updates.extend(sta)
 
-        for i in range(len(lon)):
-            if not lon[i]:
-                updatable=True
-                updates.append(da['longterm'][i])
+        if lon:
+            updates.extend(lon)
+
+        if not nex:
+            updates.append(da['next'])
     
-        if updatable:
+        if updates:
             self.write_file()
             self.git_push()
+
         return updates
     
     def git_push(self):
@@ -109,7 +119,7 @@ class Linux:
         req = requests.post(url,params=pars)
         status = req.status_code
         if status==200:
-            print("Message sent")
+            LOGGER.info("Message sent")
         else:
-            print("Cant sent the message\n Error Code:-"+str(status))
+            LOGGER.warn("Cant sent the message\n Error Code:-"+str(status))
 
