@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from dotenv import load_dotenv
 from os import system,path,getenv
-import requests
-import json
+from requests import get,post
+from json import dump,load
 import logging
 
 load_dotenv("vars.env")
@@ -20,7 +20,7 @@ class Linux:
         Scrape the latest kernel versions from kernel.org and save it in a list 
         """
         url = "https://www.kernel.org"
-        page = requests.get(url)
+        page = get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         releases_table = soup.find(id='releases')
         vert = releases_table.findAll('tr')
@@ -46,7 +46,7 @@ class Linux:
         """
         data = self.get_versions()
         with open('data.json','w') as f:
-            json.dump(data,f)
+            dump(data,f)
 
         
     def get_file_content(self):
@@ -54,7 +54,7 @@ class Linux:
         Get contents from data.json file and save it as a data dictionary
         """
         with open('data.json','r') as f:
-            data = json.load(f)
+            data = load(f)
         return data
 
     def is_updated(self):
@@ -116,7 +116,7 @@ class Linux:
             ('disable_web_page_preview', "yes")
         )
         url = "https://api.telegram.org/bot{0}/sendMessage".format(BOT_TOKEN)
-        req = requests.post(url,params=pars)
+        req = post(url,params=pars)
         status = req.status_code
         if status==200:
             LOGGER.info("Message sent")
