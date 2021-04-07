@@ -10,7 +10,7 @@ def main():
             if values.startswith("next"):
                 href='https://www.kernel.org/'
             else:
-                href='https://git.kernel.org/torvalds/h/v{0}'.format(values)
+                href='https://git.kernel.org/stable/h/v{0}'.format(values)
             message="<strong>New {0} Kernel version available</strong>\n<a href='{1}'>{2}</a>".format(str(keys[i]),href,values)
             lin.post_to_channel(message)
     
