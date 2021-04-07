@@ -126,8 +126,9 @@ class Linux:
         url = "https://api.telegram.org/bot{0}/sendMessage".format(BOT_TOKEN)
         req = post(url,params=pars)
         status = req.status_code
+        reason = req.reason
         if status==200:
             LOGGER.info("Message sent")
         else:
-            LOGGER.warn("Cant sent the message\n Error Code:-"+str(status))
+            LOGGER.warn("Cant sent the message\n Error Code:-\n{0}:{1}".format(str(status),reason))
 
