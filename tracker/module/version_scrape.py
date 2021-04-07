@@ -86,11 +86,13 @@ class Linux:
 
         if sta:
             updates.extend(sta)
-            key.append(dict_keys[1])
+            for i in range(len(sta)):
+                key.append(dict_keys[1])
 
         if lon:
             updates.extend(lon)
-            key.append(dict_keys[2])
+            for i in range(len(lon)):
+                key.append(dict_keys[2])
 
         if not nex:
             updates.append(da['next'])
