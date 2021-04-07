@@ -77,24 +77,30 @@ class Linux:
         """
         main,sta,lon,nex = self.is_updated()
         da = self.get_versions()
+        dict_keys = [x for x in da.keys()]
         updates = []
+        key = []
         if not main:
             updates.append(da['mainline'])
+            key.append(dict_keys[0])
 
         if sta:
             updates.extend(sta)
+            key.append(dict_keys[1])
 
         if lon:
             updates.extend(lon)
+            key.append(dict_keys[2])
 
         if not nex:
             updates.append(da['next'])
+            key.append(dict_keys[3])
     
         if updates:
             self.write_file()
             self.git_push()
 
-        return updates
+        return updates,key
     
     def git_push(self):
         """

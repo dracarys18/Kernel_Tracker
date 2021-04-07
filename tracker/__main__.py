@@ -3,15 +3,15 @@ from tracker import lin,LOGGER
 from time import sleep
 
 def main():
-    updatables = lin.updatable_kernels()
+    updatables,keys = lin.updatable_kernels()
     href=''
     if updatables:
-        for i in updatables:
-            if str(i).startswith("next"):
+        for i,values in enumerate(updatables):
+            if values.startswith("next"):
                 href='https://www.kernel.org/'
             else:
-                href='https://git.kernel.org/torvalds/h/v{0}'.format(str(i))
-            message="<strong>New Kernel version available</strong>\n<a href='{0}'>{1}</a>".format(href,i)
+                href='https://git.kernel.org/torvalds/h/v{0}'.format(values)
+            message="<strong>New {0} Kernel version available</strong>\n<a href='{1}'>{2}</a>".format(str(keys[i]),href,values)
             lin.post_to_channel(message)
     
 if __name__=="__main__":
