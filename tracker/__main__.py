@@ -1,6 +1,5 @@
 import os
 from tracker import lin,LOGGER
-from time import sleep
 
 def main():
     updatables,keys = lin.updatable_kernels()
@@ -16,6 +15,4 @@ def main():
     
 if __name__=="__main__":
     LOGGER.info("Bot has started")
-    while True:
-        main()
-        sleep(3)
+    main()
