@@ -1,5 +1,5 @@
 while true
 do
 	python3 -m tracker
-	sleep 300
+	sleep 120
 done
