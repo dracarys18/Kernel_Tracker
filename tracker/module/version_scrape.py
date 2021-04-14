@@ -109,7 +109,7 @@ class Linux:
         Pushes the data.json regularly to git everytime any kernel gets updates
         """
         nw = datetime.today()
-        today = nw.strftime("%d-%m-%Y")
+        today = nw.strftime("%d-%m-%Y %H%M%S")
         github_oauth=str(getenv("GITHUB_OAUTH"))
         system("git config user.name 'dracarys18' && git config user.email karthihegde010@gmail.com && git add data.json && git commit -m \"[Kernel] sync: {0}\" && git push -q https://{1}@github.com/dracarys18/Kernel_Tracker.git HEAD:master".format(today,github_oauth))
     
