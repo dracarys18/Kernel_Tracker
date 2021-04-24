@@ -1,7 +1,13 @@
-import os
-from tracker import lin,LOGGER
+from os import path
+
+from tracker import LOGGER
+from tracker.module.version_scrape import Linux
+
 
 def main():
+    lin = Linux()
+    if not path.exists("data.json"):
+        lin.write_file()
     updatables,keys = lin.updatable_kernels()
     href=''
     if updatables:

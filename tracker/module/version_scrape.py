@@ -1,20 +1,17 @@
-from bs4 import BeautifulSoup
 from datetime import datetime
+from json import dump, load
+from os import getenv, system
+
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from os import system,path,getenv
-from requests import get,post
-from json import dump,load
-import logging
+from requests import get, post
+from tracker import LOGGER
 
 load_dotenv("vars.env")
 BOT_TOKEN = str(getenv("BOT_TOKEN"))
-logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
-LOGGER = logging.getLogger(__name__)
+
 class Linux:
-    def __init__(self):
-        if not path.exists("data.json"):
-            self.write_file()
-    
+
     def get_versions(self):
         """
         Scrape the latest kernel versions from kernel.org and save it in a list 
