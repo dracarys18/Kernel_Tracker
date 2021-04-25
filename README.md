@@ -12,24 +12,8 @@ This is a Telegram Bot to Track Kernel Upstreams <a href='https://www.kernel.org
 </li>
 </ol>
 <h1>Other uses</h1>
-The bot regularly updates the data.json whenever the new Kernel gets released. So you can fetch data.json and create your own module to get you a remainder about the Kernel Upstreams. An example is given below.
+The bot regularly updates the data.json whenever the new Kernel gets released. So you can fetch data.json and create your own module to get you a remainder about the Kernel Upstreams. An example repository is here. 
+<p><a href="https://github.com/dracarys18/4.14-tracker.git">4.14 Tracker</a></p>
 
-```python
-import requests
-'''
-Write your own function post the message
-in group/channel for this example purpose
-I will take the function as post_to_telegram(text)
-'''
-
-def check_updates():
-    r=''
-    while True:
-        resp = requests.get("https://raw.githubusercontent.com/dracarys18/Kernel_Tracker/master/data.json").json()
-        for i in resp['longterm']:
-            if i.startswith('4.14') and i!=r:
-                r=i
-                post_to_telegram(i+'arrived')
-```
 
  
