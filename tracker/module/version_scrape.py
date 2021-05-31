@@ -43,7 +43,7 @@ class Linux:
         """
         data = self.get_versions()
         with open('data.json','w') as f:
-            dump(data,f)
+            dump(data,f,indent=4)
 
         
     def get_file_content(self):
