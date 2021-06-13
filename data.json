@@ -1,5 +1,5 @@
 {
-    "mainline": "5.13-rc5",
+    "mainline": "5.13-rc6",
     "stable": [
         "5.12.10",
         "5.11.22 [EOL]"
