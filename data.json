@@ -1,5 +1,5 @@
 {
-    "mainline": "5.13-rc7",
+    "mainline": "5.13",
     "stable": [
         "5.12.13"
     ],
