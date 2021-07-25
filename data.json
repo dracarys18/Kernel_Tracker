@@ -1,5 +1,5 @@
 {
-    "mainline": "5.14-rc2",
+    "mainline": "5.14-rc3",
     "stable": [
         "5.13.5",
         "5.12.19 [EOL]"
